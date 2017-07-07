@@ -1,10 +1,12 @@
 #!/bin/bash
 
+DATEPATTERN="Date_in_seconds:"
+
 
 host=$1
 
 while :; do
-date +%s
+echo $DATEPATTERN `date +%s`
 
 # Download
 ssh ubnt@$host 'megas=1;dd if=/dev/zero bs=4096 count=$((1024*$megas/4))' | cat > /dev/null

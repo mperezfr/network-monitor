@@ -1,18 +1,18 @@
 #!/bin/bash
 
-host=$1
-freq=$2
+hostfreq=$1 # file with data
 
+DATEPATTERN="Date_in_seconds:"
 
 #Test the number of parameters
-if (( $# < 2 )); then
-  echo usage: $0 host freq
+if (( $# < 1 )); then
+  echo usage: $0 file
   exit
 fi
 
 
-inputfile=$host.$freq.in
-outputfile=$host.$freq.out
+inputfile=$hostfreq
+outputfile=$hostfreq.out
 columnas=3
 
 #Test if the file exists
@@ -24,14 +24,14 @@ fi
 
 
 # grep -a to tret the files as text, to avoid treat as a binary if there are NUL (\000) values in the file
-for f in 1499; do  
-   grep -a $f $inputfile  > $outputfile.$f.txt; 
+for f in $DATEPATTERN; do  
+   grep -a $f $inputfile |  awk '{print $2}' > $outputfile.$f.txt; 
 done
 for f in CCQ Signal; do  
    grep -a $f $inputfile |  awk '{print $5}' > $outputfile.$f.txt; 
 done
 
-f=1499
+f=$DATEPATTERN
 cp $outputfile.$f.txt $outputfile.last.txt
 RAFI=$RANDOM.txt
 
@@ -46,6 +46,6 @@ done
 awk 'NF>='$columnas $outputfile.last.txt >  $RAFI
 mv $RAFI $outputfile.last.txt
 
-for f in 1499 CCQ Signal; do  
+for f in $DATEPATTERN CCQ Signal; do  
   rm $outputfile.$f.txt
 done 

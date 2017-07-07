@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DATEPATTERN="Date_in_seconds:"
+
+
 now=`date +%s`
 
 HOST=$1
@@ -26,7 +29,7 @@ snmpwalk -v 1 -c public $HOST .1.3.6.1.4.1.41112.1.4.1.1.4
 
 
 while :; do
-date +%s
+echo $DATEPATTERN `date +%s`
 #CCQ
 echo CCQ    `snmpwalk -v 1 -c public $HOST .1.3.6.1.4.1.41112.1.4.5.1.7`
 #Signal strength

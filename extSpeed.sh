@@ -2,8 +2,7 @@
 
 hostfreq=$1 # file with data
 
-DATEPATTERN=1499
-DATEPATTERN=CEST
+DATEPATTERN="Date_in_seconds:"
 
 #Test the number of parameters
 if (( $# < 1 )); then
@@ -24,16 +23,11 @@ fi
 
 
 
-# grep -a to tret the files as text, to avoid treat as a binary if there are NUL (\000) values in the file
-for f in $DATEPATTERN; do  
-   grep -a $f $inputfile  > $outputfile.$f.txt
+# grep -a to treat the files as text, to avoid treat as a binary if there are NUL (\000) values in the file
+for f in "$DATEPATTERN"; do  
+   grep -a $f $inputfile |  awk '{print $2}'  > $outputfile.$f.txt
 done
 
-#convert FIXME QUITAR
-# This is if the date has bee stored using date (not date +%s)
-date --date="jul  7 08:47:08 CEST 2017" +%s
-while read line; do  l=${line:4}; date --date="$l" +%s; done < $outputfile.$f.txt > KKKK
-mv KKKK $outputfile.$f.txt
 
 for f in Download; do  
    #grep -a $f $inputfile |  awk '{print $5}' > $outputfile.$f.txt; 
@@ -62,6 +56,6 @@ mv $RAFI $outputfile.last.txt
 
 
 
-for f in $DATEPATTERN Download Upload; do  
+for f in "$DATEPATTERN" Download Upload; do  
   rm $outputfile.$f.txt
 done 
