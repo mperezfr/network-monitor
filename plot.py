@@ -25,7 +25,7 @@ def usage():
       -x, --xtitle        x axis title 
       -y, --ytitle        y axis title
       -L  --legend        Valores de la leyenda
-      -l, --lines         draw horizontal and vertical lines
+      -l, --lines         draw horizontal and/or vertical lines
       -s, --scale         defines the scale factor
       -f, --file          defines the name of the file to save the plot
 
@@ -46,8 +46,8 @@ def main():
         """
         opts, args = getopt.gnu_getopt(sys.argv[1:], "hvs:tH:G:F:o:f:b:l:u:", ["verbose","help","sleep=","test",
         "hashtag=","back-hashtag=","folderfile=","output=", "file=", "begints=","lines=","user="])"""
-        opts, args = getopt.gnu_getopt(sys.argv[1:], "hvb:e:t:x:,y:L:ls:f:",
-                                       ["verbose","help", "begin=","end=","title=","xtitle=","ytitle=", "legend=","lines",
+        opts, args = getopt.gnu_getopt(sys.argv[1:], "hvb:e:t:x:,y:L:l:s:f:",
+                                       ["verbose","help", "begin=","end=","title=","xtitle=","ytitle=", "legend=","lines=",
                                        "scale=", "file="])
         
     except getopt.GetoptError:
@@ -57,12 +57,13 @@ def main():
 
     verbose=0
     begin=0
-    end=-1
+    end=None
     TITLE=""
     XTITLE=""
     YTITLE=""
     LEGEND=[]  # fixme
     drawYLines=False
+    drawXLines=False
     scale=1
     savefile=None
     
@@ -93,7 +94,17 @@ def main():
             LEGEND=a.split()
 
         if o in ("-l", "--lines"):
-            drawYLines=True
+            if a == 'y':
+                drawYLines=True
+            elif a == 'x':
+                drawXLines=True
+#            elif a=="":
+#                drawXLines=True
+#                drawYLines=True            
+            else:
+                usage()
+                print("*"+a+"*")
+                sys.exit()
 
         if o in ("-s", "--scale"):
             scale=int(a)
@@ -113,14 +124,18 @@ def main():
         sys.exit(2)
 
     data = np.loadtxt(inputfile)
+
     
     x = np.arange(len(data))
     dates=mpldat.epoch2num(data[begin:end,0])
+
     
     from matplotlib.dates import DateFormatter
-    fig, ax1 = plt.subplots()
+    fig = plt.figure()
+    ax1 = plt.subplot2grid((1, 4), (0, 0), colspan=3)
     
-    ax2 = ax1.twinx()
+    # To do plots in the second y axis
+    #ax2 = ax1.twinx()
     
     ax1.plot_date(dates, data[begin:end,1],'-')
     ax1.plot_date(dates, data[begin:end,2],'-')
@@ -130,18 +145,29 @@ def main():
     ax1.set_ylabel(YTITLE)
 
 
+    if drawXLines:
+        ax1.xaxis.grid(True) 
     if drawYLines:
-        plt.grid(True)
+        ax1.yaxis.grid(True) 
+
+    # Shrink current axis's height by 10% on the bottom
+    box = ax1.get_position()
+    ax1.set_position([box.x0, box.y0 + box.height * 0.2,
+                     box.width, box.height * 0.8])
     
-    #FIXME ponerla fuera
-    ax1.legend(LEGEND, loc='center left')
- 
+    # Put a legend below current axis
+    ax1.legend(LEGEND,loc='center left', bbox_to_anchor=(1.05, 0.5))
+    
+#    loc='upper center', bbox_to_anchor=(0.8, -0.2),fancybox=True, shadow=True, ncol=5)
+
+
+    
     fig.autofmt_xdate()
     myFmt = DateFormatter("%Y-%m-%d %H:%M")
     ax1.xaxis.set_major_formatter(myFmt)
 
     if savefile!=None:
-        fig.savefig(savefile)
+        fig.savefig(savefile, dpi=1000)
 
     plt.show()
 
