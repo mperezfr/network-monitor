@@ -47,7 +47,7 @@ echo $DATEPATTERN `date +%s`
   #echo $MICSECS
   # bits per sec.
   echo $((BWTX*8*1000000/MICSECS))
-  echo Upload
+  echo Download
   echo "Bytes transfered: $BWTX (`bc -l <<< \"scale=2;$BWTX/1000000\"` mbytes)"
   echo "Transfer Time: `bc -l <<< \"scale=2;$MICSECS/1000000\"` secs"
 
