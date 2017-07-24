@@ -32,8 +32,8 @@ done
 for f in Download; do  
    cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1}' > $outputfile.$f.txt
 done
-for g in Upload; do  
-   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1}' > $outputfile.$g.txt
+for f in Upload; do  
+   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1}' > $outputfile.$f.txt
 done
 
 f=$DATEPATTERN
