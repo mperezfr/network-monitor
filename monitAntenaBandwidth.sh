@@ -21,10 +21,10 @@ echo $DATEPATTERN `date +%s`
 megas=2
   ssh ubnt@$host "echo ${IF} > ${LOGFILE};
                   cat /sys/class/net/${IF}/statistics/tx_bytes>> ${LOGFILE};
-                  echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{printf (\"%06d\",\$2)}'\` >> ${LOGFILE};
+                  echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{print \$2}'\` >> ${LOGFILE};
                   dd if=/dev/zero bs=4096 count=$((1024*${megas}/4));
                   cat /sys/class/net/${IF}/statistics/tx_bytes>> ${LOGFILE};
-                  echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{printf (\"%06d\",\$2)}'\` >> ${LOGFILE};" | cat > /dev/null
+                  echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{print \$2}'\` >> ${LOGFILE};" | cat > /dev/null
 
   scp ubnt@$host:$LOGFILE .
   ssh ubnt@$host rm "${LOGFILE}"
