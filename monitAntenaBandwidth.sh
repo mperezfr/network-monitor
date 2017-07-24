@@ -21,15 +21,15 @@ echo $DATEPATTERN `date +%s`
 
  
   #Download
-  ssh ubnt@$host "echo ${IF} Download Test > ${LOGFILE};
+  ssh $host "echo ${IF} Download Test > ${LOGFILE};
                   cat /sys/class/net/${IF}/statistics/tx_bytes>> ${LOGFILE};
                   echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{printf (\"%06d\",\$2)}'\` >> ${LOGFILE};
                   dd if=/dev/zero bs=4096 count=$((1024*${megas}/4));
                   cat /sys/class/net/${IF}/statistics/tx_bytes>> ${LOGFILE};
                   echo \`adjtimex | grep tv_sec | awk '{print \$2}'\`\`adjtimex | grep tv_usec | awk '{printf (\"%06d\",\$2)}'\` >> ${LOGFILE};" | cat > /dev/null
 
-  scp ubnt@$host:$LOGFILE .
-  ssh ubnt@$host rm "${LOGFILE}"
+  scp $host:$LOGFILE .
+  ssh $host rm "${LOGFILE}"
   
 
   TXPREV=`sed -n '2p' < $LOGFILE`
