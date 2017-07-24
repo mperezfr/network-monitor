@@ -5,8 +5,9 @@ DATEPATTERN="Date_in_seconds:"
 
 
 host=$1
-IF=$2
-LOGFILE=$1.log
+freq=$2
+IF=$3
+LOGFILE=$1.$2.log
 rm `basename $LOGFILE .log`.full.log
 
 if [ -z "$IF" ]; then
