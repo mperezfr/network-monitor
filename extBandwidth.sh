@@ -30,10 +30,10 @@ done
 
 
 for f in Download; do  
-   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1}' > $outputfile.$f.txt
+   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1/1000000}' > $outputfile.$f.txt
 done
 for f in Upload; do  
-   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1}' > $outputfile.$f.txt
+   cat $inputfile | sed -z 's/\n'$f'/ '$f'/g' | grep $f |  awk '{print $1/1000000}' > $outputfile.$f.txt
 done
 
 f=$DATEPATTERN

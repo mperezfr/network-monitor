@@ -46,7 +46,7 @@ echo $DATEPATTERN `date +%s`
   #echo $((TX-TXPREV))
   #echo $MICSECS
   # bits per sec.
-  echo $((BWTX*8*1000000/MICSECS))
+  echo $((BWTX*8*1000000/MICSECS)) bps 
   echo Download
   echo "Bytes transfered: $BWTX (`bc -l <<< \"scale=2;$BWTX/1000000\"` mbytes)"
   echo "Transfer Time: `bc -l <<< \"scale=2;$MICSECS/1000000\"` secs"
@@ -78,7 +78,7 @@ echo $DATEPATTERN `date +%s`
   #echo $((TX-TXPREV))
   #echo $MICSECS
   # bits per sec.
-  echo $((BWTX*8*1000000/MICSECS))
+  echo $((BWTX*8*1000000/MICSECS)) bps 
   echo Upload
   echo "Bytes transfered: $BWTX (`bc -l <<< \"scale=2;$BWTX/1000000\"` mbytes)"
   echo "Transfer Time: `bc -l <<< \"scale=2;$MICSECS/1000000\"` secs"
