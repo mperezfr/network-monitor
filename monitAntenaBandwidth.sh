@@ -7,6 +7,7 @@ DATEPATTERN="Date_in_seconds:"
 host=$1
 IF=$2
 LOGFILE=$1.log
+rm `basename $LOGFILE .log`.full.log
 
 if [ -z "$IF" ]; then
         IF=`ls -1 /sys/class/net/ | head -1`
@@ -36,6 +37,8 @@ megas=2
 
   let BWTX=$TX-$TXPREV
   let MICSECS=$((TPT-TPR))
+  
+  cat $LOGFILE >> `basename $LOGFILE .log`.full.log
 
   # echo "Received: $BWRX B/s    Sent: $BWTX B/s"
   #echo $((TX-TXPREV))
